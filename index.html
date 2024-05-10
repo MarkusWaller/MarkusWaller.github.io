@@ -1,121 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hamburg</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile Manager</title>
 <style>
-body {
-font-family: Lato, sans-serif;
-}
-h1 {
-width: 100%; → Streckt sich über die gesamte Breite
-font-weight: lighter; → Die Schrift wird weniger dick angezeigt.
-text-align: center; → In Kombination mit width: 100% wird die Überschrift hier mittig angezeigt.
-font-size: 40px;
-color: indianred; → Mehr zum Thema Farben: http://www.w3schools.com/cssref/css_colors.asp
-}
-h2 {
-display: inline-block;
-text-align: center;
-background-color: indianred;
-padding: 3px; → Innenabstand
-margin: 5px; → Außenabstand
-font-size: 28px;
-color: white;
-}
-h3 {
-display: inline-block;
-font-weight: bold;
-background-color: white;
-text-align: center;
-padding: 10px;
-color: indianred;
-}
-.container { 
-min-width: 775px;
-display: flex;
-flex-wrap: wrap; 
-justify-content: center;
-}
-.main {
-background-size: cover; 
-min-width: 964px; 
-min-height: 422px; 
-display: flex;
-justify-content: center;
-align-items: center; 
-text-align: center; 
-background-image: url("https://abload.de/img/hamburgvyk99.jpg");
-}
-.more {
-display: flex;
-justify-content: center;
-align-items: center;
-padding-top: 45px; 
-}
-.more div {
-background-size: cover;
-min-width: 450px;
-min-height: 345px;
-display: flex;
-justify-content: center;
-align-items: center;
-margin-right: 30px;
-margin-left: 30px;
-}
-#sights {
-background-image: url("https://abload.de/img/sehenswuerdigkeiteng6jig.jpg");
-}
-#events {
-background-image: url("https://abload.de/img/veranstaltungensbjlz.jpg");
-}
-#footer {
-text-align: center;
-color: indianred;
-width: 100%;
-font-weight: lighter;
-font-size: 20px;
-padding: 50px;
-}
+    /* Stile für einfaches Layout */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+    form {
+        margin-bottom: 20px;
+    }
+    .user-list {
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
 </style>
 </head>
-<html>
 <body>
+<h1>User Profile Manager</h1>
+<form id="user-form">
+    <label for="name">Name:</label>
+    <input type="text" id="name" required>
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+    <button type="submit">Add User</button>
+</form>
+<div class="user-list">
+    <h2>User List</h2>
+    <ul id="user-list"></ul>
+</div>
 
-  <div class="container">
+<script>
+    class User {
+        constructor(name, email) {
+            this.name = name;
+            this.email = email;
+        }
+        toString() {
+            return JSON.stringify({
+                name: this.name,
+                email: this.email
+            });
+        }
+    }
 
-    <h1>Hamburg</h1>
+    class UserManager {
+        constructor() {
+            this.users = [];
+        }
+        addUser(user) {
+            this.users.push(user);
+            console.log(user.toString()); // Konsolenausgabe
+            this.renderUsers();
+        }
+        renderUsers() {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = '';
+            this.users.forEach(user => {
+                const li = document.createElement('li');
+                li.textContent = user.toString();
+                userList.appendChild(li);
+            });
+        }
+    }
 
-    <div class="main">
-      <div>
-        <div>
-          <h2>Zweitgrößte Stadt Deutschlands</h2>
-        </div>
-        <div>
-          <h2>1,8 Millionen Einwohner</h2>
-        </div>
-        <div>
-          <h2>An Alster & Elbe</h2>
-        </div>
-        <div>
-          <h3>Mehr erfahren</h3>
-        </div>
-      </div>
-    </div>
+    const userManager = new UserManager();
 
-    <div class="more">
-      <div id="sights">
-        <h3>Sehenswürdigkeiten</h3>
-      </div>
-      <div id="events">
-        <h3>Veranstaltungen</h3>
-      </div>
-    </div>
-
-    <div id="footer">Kontakt</div>
-
-  </div>
-
+    const userForm = document.getElementById('user-form');
+    userForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const user = new User(name, email);
+        userManager.addUser(user);
+        userForm.reset();
+    });
+</script>
 </body>
 </html>
